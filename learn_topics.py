@@ -66,7 +66,6 @@ if __name__ == "__main__":
     V = M.shape[0]
     prng = RandomState(params.seed)
     R = rp.Random_Matrix(V, params.new_dim, prng)
-    #Q = np.vstack(generate_Q_matrix(row_M, col_M, row_normalize=True, projection_matrix=R.T)) #row-by-row generation
 
     #only accept anchors that appear in a significant number of docs
     print "identifying candidate anchors"
@@ -76,8 +75,8 @@ if __name__ == "__main__":
             candidate_anchors.append(i)
     print len(candidate_anchors), "candidates"
 
-    #_, anchors = gs.Projection_Find(Q, K, candidate_anchors)
-    anchors = range(50)
+    Q = np.vstack(generate_Q_matrix(row_M, col_M, row_normalize=True, projection_matrix=R.T)) #row-by-row generation
+    _, anchors = gs.Projection_Find(Q, K, candidate_anchors)
     print "anchors are:", anchors
     anchor_file = file(outfile+'.anchors', 'w')
     print >>anchor_file, "\t".join(["topic id", "word id", "word"])
